@@ -37,7 +37,7 @@ jobs:
             echo "CHANGELOG.md has no section for $version"; exit 1
           fi
           cat notes.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: notes
           path: notes.md
@@ -62,7 +62,7 @@ jobs:
         env:
           # No paid signing certificate; build unsigned instead of failing.
           CSC_IDENTITY_AUTO_DISCOVERY: false
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist-${{ matrix.os }}
           if-no-files-found: error
