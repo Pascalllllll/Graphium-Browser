@@ -69,6 +69,10 @@ The first time you open it:
   the app is damaged, run `xattr -cr "/Applications/Graphium.app"` in
   Terminal once.
 - **Linux AppImage:** `chmod +x Graphium-*.AppImage`, then double-click it.
+- **Debian, Ubuntu, Mint:** double-click the `.deb` to install it, or run
+  `sudo apt install ./Graphium-*.deb` in a terminal. Graphium then shows up
+  in your app list.
+- **Linux .tar.gz:** unpack it, then run `./graphium` inside the folder.
 
 These warnings appear because the app isn't signed with a paid certificate.
 
@@ -133,36 +137,6 @@ On a Mac use `Cmd` instead of `Ctrl`.
 | Add page to new tab       | `Ctrl+D`                          |
 | Zoom in / out / reset     | `Ctrl+=` / `Ctrl+-` / `Ctrl+0`    |
 | Full screen               | `F11`                             |
-
-## Build it yourself
-
-You need [Node.js](https://nodejs.org) 22 or newer.
-
-```sh
-npm install
-npm start                     # run from source
-npm test                      # end-to-end checks (needs internet)
-npx electron test/memory.js   # memory measurement
-npm run dist:linux            # or dist:win, dist:mac; output goes to dist/
-```
-
-## Publishing a release (maintainers)
-
-1. Make sure the repository is **public** and `npm test` passes.
-2. In [CHANGELOG.md](CHANGELOG.md), move the notes from *Unreleased* into a new
-   version section dated today, add its link at the bottom, bump `version`
-   in `package.json`, and change the version in the README download links.
-   Then tag and push:
-   ```sh
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-3. GitHub Actions checks that the tag, `package.json` and the changelog
-   agree, builds every installer (about 10 minutes), and publishes the
-   release with the files, a `SHA256SUMS.txt`, and that version's changelog
-   section as the release text. Anyone can download it as soon as it's up.
-
-GitHub Actions and Releases are free for public repositories.
 
 ## How it is built
 

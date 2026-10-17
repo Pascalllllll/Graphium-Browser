@@ -81,7 +81,7 @@
         }
       ],
       "category": "Network",
-      "icon": "build/icon.png",
+      "icon": "build/icons",
       "maintainer": "Graphium contributors",
       "synopsis": "Small, fast, private browser",
       "mimeTypes": [
