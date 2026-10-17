@@ -18,4 +18,9 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y xvfb
       # Ubuntu 24.04 blocks the user namespaces Chromium's sandbox needs.
       - run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-      - run: xvfb-run --auto-servernum npm test
+      # Plain Xvfb rather than xvfb-run, whose temp-dir cleanup can fail and
+      # turn a passing run into exit code 5.
+      - run: |
+          Xvfb :99 -screen 0 1280x1024x24 &
+          sleep 2
+          DISPLAY=:99 npm test

@@ -11,6 +11,9 @@ const os = require('os');
 const out = path.resolve(process.argv[2] || 'smoke-shots');
 fs.mkdirSync(out, { recursive: true });
 app.setPath('userData', fs.mkdtempSync(path.join(os.tmpdir(), 'graphium-smoke-')));
+// CI runners have no GPU, and Chromium blocklists WebGL2 on their software
+// renderer. Locally the blocklist stays on so a real regression still fails.
+if (process.env.CI) app.commandLine.appendSwitch('ignore-gpu-blocklist');
 const graphium = require('../src/main.js');
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
