@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<link rel="stylesheet" href="pages.css">
+<style>
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 20px; }
+  h2 {
+    margin: 32px 0 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .row.stack { display: block; }
+  .row.stack > .label { margin-bottom: 10px; }
+  .label strong { display: block; font-weight: 500; }
+  .label span { display: block; color: var(--muted); font-size: 13px; }
+  .controls { display: flex; gap: 8px; align-items: center; flex: none; }
+  select { min-width: 200px; }
+  input[type="color"] {
+    width: 40px;
+    height: 32px;
+    padding: 2px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--bg);
+  }
+  .swatches { display: flex; gap: 6px; }
+  .swatch {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--line);
+  }
+  .swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--text); }
+
+  .switch { position: relative; width: 38px; height: 22px; flex: none; }
+  .switch input { position: absolute; inset: 0; margin: 0; opacity: 0; }
+  .switch span {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--surface-hover);
+    border: 1px solid var(--line);
+    pointer-events: none;
+  }
+  .switch span::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: transform 0.12s;
+  }
+  .switch input:checked + span { background: var(--accent); border-color: var(--accent); }
+  .switch input:checked + span::after { transform: translateX(16px); }
+  .switch input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  #custom-search { width: 100%; margin-top: 10px; }
+  #homepage { width: 260px; }
+  textarea { width: 100%; }
+  .path { color: var(--muted); font-size: 13px; word-break: break-all; }
+  .list { margin: 8px 0 0; padding: 0; list-style: none; }
+  .list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .note { color: var(--muted); font-size: 13px; }
+
+  details { margin-top: 32px; }
+  summary {
+    padding: 10px 0;
+    font-weight: 500;
+    cursor: default;
+    color: var(--muted);
+  }
+  summary:hover { color: var(--text); }
+
+  .saved {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+  }
+  .saved.show { opacity: 1; }
+  @media (max-width: 560px) {
+    .row { flex-direction: column; align-items: stretch; gap: 10px; }
+    .controls { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Settings</h1>
+
+  <h2>Search and start</h2>
+  <div class="row stack">
+    <div class="label"><strong>Search engine</strong><span>Used when you type words in the address bar.</span></div>
+    <select id="searchEngine"></select>
+    <input id="custom-search" type="url" placeholder="https://example.com/search?q=%s" hidden>
+  </div>
+  <div class="row">
+    <div class="label"><strong>When Graphium starts</strong></div>
+    <select id="startup">
+      <option value="new">Open the new tab page</option>
+      <option value="restore">Continue where you left off</option>
+    </select>
+  </div>
+  <div class="row">
+    <div class="label"><strong>Make Graphium your default browser</strong><span id="default-status"></span></div>
+    <button id="make-default">Make default</button>
+  </div>
+
+  <h2>Look</h2>
+  <div class="row">
+    <div class="label"><strong>Theme</strong></div>
+    <select id="theme">
+      <option value="system">Same as my computer</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </div>
+  <div class="row">
+    <div class="label"><strong>Color</strong></div>
+    <div class="controls">
+      <div class="swatches" id="swatches"></div>
+      <input id="accent" type="color" aria-label="Pick any color">
+    </div>
+  </div>
+
+  <h2>Privacy</h2>
+  <div class="row">
+    <div class="label"><strong>Block ads and trackers</strong><span>Pages load faster and use less memory. If a site doesn't work, click the shield in the address bar to allow ads there.</span></div>
+    <label class="switch"><input type="checkbox" id="shields"><span></span></label>
+  </div>
+  <div class="row">
+    <div class="label"><strong>Clear history, cookies and cache</strong><span>Signs you out of most sites.</span></div>
+    <button id="clear-data" class="danger">Clear</button>
+  </div>
+
+  <h2>Downloads</h2>
+  <div class="row">
+    <div class="label"><strong>Save files to</strong><span class="path" id="download-dir"></span></div>
+    <div class="controls">
+      <button id="pick-dir">Change</button>
+    </div>
+  </div>
+
+  <details id="advanced">
+    <summary>Advanced</summary>
+
+    <div class="row">
+      <div class="label"><strong>Home page</strong><span>Only used by the home button. Empty means the new tab page.</span></div>
+      <input id="homepage" type="text" placeholder="graphium://newtab">
+    </div>
+    <div class="row">
+      <div class="label"><strong>Show home button</strong></div>
+      <label class="switch"><input type="checkbox" id="showHomeButton"><span></span></label>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Compact toolbar</strong><span>Smaller tabs and buttons.</span></div>
+      <label class="switch"><input type="checkbox" id="compact"><span></span></label>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Ask where to save each download</strong></div>
+      <label class="switch"><input type="checkbox" id="askDownloadLocation"><span></span></label>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Save memory by sleeping unused tabs</strong><span>A sleeping tab reloads when you click it. Tabs playing sound never sleep.</span></div>
+      <select id="sleepTabsMinutes">
+        <option value="0">Never</option>
+        <option value="5">After 5 minutes</option>
+        <option value="10">After 10 minutes</option>
+        <option value="30">After 30 minutes</option>
+        <option value="120">After 2 hours</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Use secure connections (HTTPS) when possible</strong></div>
+      <label class="switch"><input type="checkbox" id="httpsUpgrade"><span></span></label>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Ask sites not to sell my data</strong><span>Sends the Global Privacy Control signal.</span></div>
+      <label class="switch"><input type="checkbox" id="gpc"><span></span></label>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Clear history and cookies when I quit</strong></div>
+      <label class="switch"><input type="checkbox" id="clearOnExit"><span></span></label>
+    </div>
+    <div class="row stack">
+      <div class="label"><strong>Sites where ads are allowed</strong></div>
+      <ul class="list" id="allowlist"></ul>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Camera, microphone and location choices</strong><span>Forget what you allowed or blocked for each site.</span></div>
+      <button id="reset-permissions">Forget</button>
+    </div>
+    <div class="row stack">
+      <div class="label"><strong>Custom toolbar style (CSS)</strong><span>For people who know CSS. Example: <code>#bar { background: #223 }</code></span></div>
+      <textarea id="customCss" rows="4" spellcheck="false"></textarea>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Ad block lists</strong><span id="lists-status"></span></div>
+      <button id="update-lists">Update now</button>
+    </div>
+    <div class="row">
+      <div class="label"><strong>Reset all settings</strong></div>
+      <button id="reset-settings" class="danger">Reset</button>
+    </div>
+  </details>
+
+  <p class="note" id="about"></p>
+</main>
+<div class="saved" id="saved" role="status">Saved</div>
+<script src="settings.js"></script>
+</body>
+</html>

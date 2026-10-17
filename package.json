@@ -1,0 +1,160 @@
+{
+  "name": "graphium",
+  "productName": "Graphium",
+  "version": "1.0.0",
+  "description": "A small, fast, private Chromium-based browser with built-in ad and tracker blocking.",
+  "keywords": [
+    "browser",
+    "web-browser",
+    "chromium",
+    "electron",
+    "adblock",
+    "privacy",
+    "lightweight"
+  ],
+  "main": "src/main.js",
+  "license": "MIT",
+  "author": "Pascalllllll",
+  "homepage": "https://github.com/Pascalllllll/Graphium-Browser",
+  "bugs": {
+    "url": "https://github.com/Pascalllllll/Graphium-Browser/issues"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "electron test/smoke.js test-shots",
+    "dist": "electron-builder",
+    "dist:linux": "electron-builder --linux",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "dependencies": {
+    "@ghostery/adblocker-electron": "2.20.1"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "io.github.graphium",
+    "productName": "Graphium",
+    "executableName": "graphium",
+    "artifactName": "Graphium-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "electronFuses": {
+      "runAsNode": false,
+      "enableCookieEncryption": true,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "Network",
+      "icon": "build/icon.png",
+      "maintainer": "Graphium contributors",
+      "synopsis": "Small, fast, private browser",
+      "mimeTypes": [
+        "x-scheme-handler/http",
+        "x-scheme-handler/https",
+        "text/html"
+      ],
+      "desktop": {
+        "entry": {
+          "Name": "Graphium",
+          "GenericName": "Web Browser",
+          "Categories": "Network;WebBrowser;"
+        }
+      },
+      "syncDesktopName": true
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "artifactName": "Graphium-${version}-win-setup.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "artifactName": "Graphium-${version}-win-${arch}-portable.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.png"
+    },
+    "dmg": {
+      "title": "Graphium"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "releaseType": "draft"
+      }
+    ]
+  },
+  "desktopName": "graphium.desktop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pascalllllll/Graphium-Browser.git"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

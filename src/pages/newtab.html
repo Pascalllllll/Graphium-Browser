@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New tab</title>
+<link rel="stylesheet" href="pages.css">
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20vh 24px 32px;
+  }
+  @font-face {
+    font-family: Manrope;
+    src: url(manrope.woff2) format('woff2');
+    font-weight: 200 800;
+    font-display: block;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 28px;
+    font: 300 48px/1 Manrope, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .brand svg { width: 46px; height: 46px; flex: none; }
+  .brand .dot { fill: var(--accent); }
+  #search {
+    width: min(100%, 584px);
+    margin-bottom: 40px;
+  }
+  #q {
+    width: 100%;
+    height: 48px;
+    padding: 0 22px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+    font-size: 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+  #q:hover { box-shadow: 0 1px 6px rgba(0, 0, 0, 0.16); }
+  #q:focus { outline: none; border-color: var(--accent); }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 112px);
+    justify-content: center;
+    gap: 4px;
+    width: min(100%, 600px);
+  }
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 6px 12px;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .tile:hover { background: var(--surface); }
+  .icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--surface-hover);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .icon img { width: 24px; height: 24px; }
+  .name {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+  }
+  .remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 24px;
+    opacity: 0;
+  }
+  .tile:hover .remove,
+  .remove:focus-visible { opacity: 1; }
+  .remove:hover { background: var(--surface-hover); color: var(--text); }
+  .add { border: 0; height: auto; background: none; }
+  .add .icon { font-weight: 400; font-size: 24px; color: var(--muted); }
+  .add:hover { background: var(--surface); }
+  form#add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  form#add-form input { width: 220px; }
+  footer {
+    margin-top: auto;
+    padding-top: 40px;
+  }
+  footer button { height: auto; padding: 4px 8px; border: 0; background: none; color: var(--muted); font-size: 13px; }
+  footer button:hover { color: var(--text); background: var(--surface); }
+</style>
+</head>
+<body>
+<h1 class="brand">
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M70 21.5 L50 10 L15.4 30 L15.4 70 L50 90 L84.6 70 L84.6 50 L50 50" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle class="dot" cx="50" cy="50" r="7"/>
+  </svg>
+  graphium
+</h1>
+<form id="search" autocomplete="off">
+  <input id="q" type="text" spellcheck="false" placeholder="Search or type a web address" aria-label="Search or type a web address">
+</form>
+<div id="grid"></div>
+<form id="add-form" hidden>
+  <input id="add-url" type="text" placeholder="Web address, like youtube.com" aria-label="Web address" required>
+  <input id="add-title" type="text" placeholder="Name (optional)" aria-label="Name" maxlength="80">
+  <button class="primary" type="submit">Add</button>
+  <button type="button" id="add-cancel">Cancel</button>
+</form>
+<footer>
+  <button id="history" type="button">History</button>
+  <button id="settings" type="button">Settings</button>
+</footer>
+<script src="newtab.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+node_modules/
+dist/
+test-shots/
+
+# Private run notes, kept on this machine
+LOCAL.md

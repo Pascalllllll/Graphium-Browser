@@ -1,0 +1,41 @@
+name: Bug report
+description: Something in Graphium doesn't work right
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open https://example.com
+        2. Click ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Graphium version
+      description: Shown at the bottom of Menu → Settings.
+      placeholder: Graphium 1.0.0, based on Chromium ...
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: System
+      options: [Windows, macOS, Linux]
+    validations:
+      required: true
+  - type: dropdown
+    id: adblock
+    attributes:
+      label: Does it still happen with ads allowed on that site?
+      description: Click the shield in the address bar to allow ads, then reload.
+      options: ["Yes", "No, it only happens with ad blocking on", "Not tried"]
